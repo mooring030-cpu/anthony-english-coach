@@ -1,6 +1,19 @@
-# ANTHONY ENGLISH COACH v1.1
+# ANTHONY ENGLISH COACH v1.1.1
 
 기존 v1.0을 확장한 GitHub Pages + Supabase 기반 영어 학습 PWA입니다.
+
+## v1.1.1 버그 수정
+
+- 홈 버튼 / ← 홈 / 학습완료 후 홈 이동 오류 수정
+- 랭킹 점수 갱신 오류 수정
+- 전체 학습자료 한글 검색 오류 수정
+- 퀴즈 중복 보기 방지
+- 선택한 CEFR 레벨과 다른 레벨의 학습자료가 시작되는 문제 수정
+- 오늘의 10분 학습 완료 상태 표시 보강
+- GitHub Pages 하위 경로에서 Push 알림 클릭 시 잘못된 주소로 이동하는 문제 수정
+- 로그아웃 시 Push 구독 정리로 계정 전환 충돌 예방
+- 서비스워커 캐시를 v1.1.1로 갱신하여 업데이트 반영 강화
+
 
 ## v1.1 핵심 업데이트
 
@@ -29,7 +42,7 @@
 기존 v1.0 저장소를 이미 만들었다면 이 폴더의 파일로 기존 저장소 파일을 덮어쓴 뒤 GitHub Desktop에서:
 
 1. 변경 파일 확인
-2. Summary: `Update ANTHONY ENGLISH COACH v1.1`
+2. Summary: `Fix ANTHONY ENGLISH COACH v1.1.1`
 3. `Commit to main`
 4. `Push origin`
 
@@ -51,7 +64,7 @@
 
 ## 4. 오후 7시 미학습 Push 알림
 
-앱 화면의 구독 기능만으로는 서버가 자동 발송할 수 없기 때문에 v1.1에는 다음을 추가했습니다.
+앱 화면의 구독 기능만으로는 서버가 자동 발송할 수 없기 때문에 v1.1부터 다음을 포함합니다.
 
 - `supabase/functions/english-daily-reminder/index.ts`
 - `supabase/functions/english-daily-reminder/README_KR.md`
@@ -71,7 +84,7 @@ ZIP과 별도로 전달되는 `ANTHONY_English_Coach_v1_1_PRIVATE_SETUP.txt`에 
 
 Cron은 `0 10 * * *`로 설정되어 있으며, 이는 **매일 10:00 UTC = 한국시간 19:00**입니다.
 
-## 5. v1.0 → v1.1 업데이트 시 학습기록
+## 5. v1.0/v1.1 → v1.1.1 업데이트 시 학습기록
 
 기존 LocalStorage 키와 Supabase 테이블을 유지하므로 v1.0 학습기록은 그대로 이어집니다. 새 콘텐츠와 Business English 트랙만 추가됩니다.
 
