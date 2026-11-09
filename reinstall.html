@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#183b95">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="YOMIAN English">
+<title>YOMIAN ENGLISH · 재설치 복구</title>
+<link rel="manifest" href="./manifest-reinstall.webmanifest">
+<link rel="apple-touch-icon" href="./yomian-english-icon-192-v3.png">
+<style>
+:root{font-family:Inter,Pretendard,"Noto Sans KR",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#13213a;background:#eef3fb}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(160deg,#0f347e 0,#183b95 34%,#eef3fb 34.2%,#f7f9fd 100%);padding:28px 18px}.wrap{max-width:660px;margin:0 auto}.brand{display:flex;align-items:center;gap:13px;color:#fff;margin:8px 0 28px}.logo{width:56px;height:56px;border-radius:17px;background:#fff;color:#183b95;display:grid;place-items:center;font-weight:900;font-size:29px;box-shadow:0 12px 30px #071c4a66}.brand h1{font-size:24px;margin:0}.brand small{opacity:.82}.card{background:#fff;border-radius:26px;padding:26px;box-shadow:0 18px 50px #183b9526;border:1px solid #dfe7f4}.icon{width:110px;height:110px;border-radius:25px;display:block;margin:-2px auto 18px;box-shadow:0 12px 32px #183b952b}h2{text-align:center;font-size:25px;margin:8px 0 8px}p{line-height:1.65;color:#56657a}.note{background:#f5f8ff;border:1px solid #d9e4ff;border-radius:16px;padding:14px 16px;margin:18px 0;color:#33435c}.note b{color:#183b95}.btn{width:100%;border:0;border-radius:15px;padding:16px 18px;font-size:17px;font-weight:800;cursor:pointer}.primary{background:#183b95;color:#fff;box-shadow:0 10px 24px #183b9538}.secondary{margin-top:10px;background:#eef3fb;color:#183b95}.status{margin:14px 0 0;padding:12px 14px;border-radius:14px;background:#f6f8fc;color:#657287;font-size:14px;text-align:center}.steps{margin:20px 0 0;padding-left:22px;color:#4e5d72;line-height:1.75}.warn{margin-top:18px;font-size:13px;color:#7b8798}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#eaf0ff;color:#183b95;font-size:12px;font-weight:800;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="logo">Y</div><div><h1>YOMIAN ENGLISH</h1><small>PWA 재설치 복구</small></div></div>
+  <main class="card">
+    <img class="icon" src="./yomian-english-icon-192-v3.png" alt="YOMIAN ENGLISH 아이콘">
+    <div style="text-align:center"><span class="pill">Chrome · Android 복구 경로</span></div>
+    <h2>“이미 설치됨” 오류 복구</h2>
+    <p>앱을 설치하지 않았거나 이미 삭제했는데도 Chrome이 <b>이미 설치된 앱</b>으로 잘못 판단하는 경우를 위한 복구 페이지입니다. 일반 앱과 다른 설치 ID를 사용하지만, 실행하면 동일한 YOMIAN ENGLISH와 동일한 로그인·학습기록을 사용합니다.</p>
+    <div class="note"><b>중요:</b> 정상적으로 설치가 되는 기기라면 이 페이지를 사용할 필요가 없습니다. 설치 상태가 꼬인 기기에서만 아래 버튼을 사용하세요.</div>
+    <button id="installBtn" class="btn primary">앱 설치</button>
+    <button class="btn secondary" onclick="location.href='./'">YOMIAN ENGLISH 홈으로</button>
+    <div id="status" class="status">설치 준비를 확인하고 있습니다…</div>
+    <ol class="steps">
+      <li>위 <b>앱 설치</b> 버튼을 누릅니다.</li>
+      <li>Chrome 설치 창이 나오면 설치를 승인합니다.</li>
+      <li>버튼이 작동하지 않으면 Chrome 메뉴(⋮)에서 <b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 선택합니다.</li>
+    </ol>
+    <div class="warn">이 복구 설치는 학습기록을 초기화하지 않습니다. 로그인한 계정의 Supabase 기록과 브라우저 학습기록은 그대로 사용됩니다.</div>
+  </main>
+</div>
+<script>
+let deferredPrompt=null;
+const btn=document.getElementById('installBtn');
+const status=document.getElementById('status');
+function setStatus(t){status.textContent=t}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;btn.disabled=false;setStatus('복구용 설치 준비가 완료되었습니다.');
+});
+window.addEventListener('appinstalled',()=>{deferredPrompt=null;setStatus('설치가 완료되었습니다. 홈 화면에서 YOMIAN ENGLISH를 실행하세요.');btn.textContent='설치 완료';btn.disabled=true;});
+btn.addEventListener('click',async()=>{
+  if(!deferredPrompt){setStatus('설치 창이 자동으로 뜨지 않으면 Chrome 메뉴(⋮) → 앱 설치/홈 화면에 추가를 선택해 주세요.');return;}
+  const p=deferredPrompt;deferredPrompt=null;
+  try{await p.prompt();const r=await p.userChoice;setStatus(r&&r.outcome==='accepted'?'설치 요청을 승인했습니다.':'설치를 취소했습니다. 다시 시도할 수 있습니다.');}catch(e){setStatus('설치 요청을 열지 못했습니다. Chrome 메뉴(⋮)에서 앱 설치를 선택해 주세요.');}
+});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'}).catch(()=>{});}
+setTimeout(()=>{if(!deferredPrompt)setStatus('Chrome이 설치 버튼을 준비하지 못한 경우 메뉴(⋮) → 앱 설치/홈 화면에 추가를 사용하세요.');},1800);
+</script>
+</body>
+</html>

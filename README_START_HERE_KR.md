@@ -1,3 +1,19 @@
+# YOMIAN ENGLISH v1.2.2
+
+## Chrome/Android “이미 설치됨” 복구 기능
+- 메인 manifest에 명시적 App ID(`./`)를 추가했습니다.
+- 설치하지 않았거나 삭제했는데도 Chrome이 “이미 설치됨”으로 판단할 때는 배포 주소 뒤에 `/reinstall.html`을 붙여 접속하세요.
+- 복구 페이지는 별도의 App ID(`./reinstall-v1`)를 사용합니다.
+- 앱 내부 설정 → `앱 설치 · 재설치 복구`에서도 복구 페이지로 이동할 수 있습니다.
+- 로그인, Supabase, 학습기록은 기존과 동일하게 사용합니다.
+- Supabase SQL 재실행은 필요 없습니다.
+
+## GitHub 업데이트
+기존 저장소에 패치 파일을 덮어쓴 후 GitHub Desktop에서 `Commit to main` → `Push origin` 하세요.
+Smart Update가 이미 적용된 v1.2.1 사용자는 안전한 시점에 v1.2.2가 자동 반영됩니다.
+
+---
+
 # YOMIAN ENGLISH v1.2.1
 
 이번 버전은 기존 **ANTHONY ENGLISH COACH v1.1.2**에서 바로 업데이트할 수 있는 YOMIAN 리브랜딩 최종본입니다.

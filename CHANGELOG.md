@@ -1,3 +1,12 @@
+# YOMIAN ENGLISH v1.2.2
+
+## PWA install recovery patch
+- Added explicit stable `id` (`./`) to the main web app manifest so YOMIAN ENGLISH has a distinct PWA identity from other apps hosted on the same GitHub Pages origin.
+- Added `reinstall.html` and `manifest-reinstall.webmanifest` using a separate recovery App ID (`./reinstall-v1`).
+- Added Settings → `앱 설치 · 재설치 복구` link.
+- Recovery installation uses the same YOMIAN ENGLISH app, login, Supabase data and learning progress; it only changes the install identity used by Chrome.
+- Added recovery files to the service-worker cache and bumped Smart Update to v1.2.2.
+
 # YOMIAN ENGLISH v1.2.1
 
 ## Final rebrand + English icon update
