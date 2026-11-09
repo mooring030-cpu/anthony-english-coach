@@ -1,8 +1,25 @@
-# ANTHONY ENGLISH COACH v1.1.1
+# ANTHONY ENGLISH COACH v1.1.2
 
-기존 v1.0을 확장한 GitHub Pages + Supabase 기반 영어 학습 PWA입니다.
+GitHub Pages + Supabase 기반 영어 학습 PWA입니다.
 
-## v1.1.1 버그 수정
+## v1.1.2 Smart Update
+
+이번 버전부터 사용자가 패치 후 매번 새로고침할 필요가 없도록 Smart Update를 적용했습니다.
+
+- 앱 실행 시 새 버전 확인
+- 앱을 다시 활성화하거나 브라우저 탭으로 돌아올 때 새 버전 확인
+- 온라인 복귀 시 새 버전 확인
+- 앱을 오래 켜둔 경우 5분 간격으로 업데이트 확인
+- 새 버전은 먼저 백그라운드에서 설치하고 대기
+- 학습/퀴즈/Listening/Speaking/전체자료/설정/로그인 중에는 강제 새로고침 금지
+- 홈 화면이며 팝업이 없는 안전한 상태에서만 자동 적용
+- 업데이트 적용 시 페이지가 자동으로 한 번만 재로드됨
+- 직전 버전 캐시를 함께 보존해 업데이트 전환 중 안정성 강화
+
+### 중요한 1회성 안내
+현재 사용 중인 v1.1.1에는 Smart Update 코드가 없으므로 **v1.1.2를 GitHub에 올린 직후에는 이번 한 번만 앱을 완전히 종료 후 다시 열거나 새로고침**해 주세요. v1.1.2가 한 번 로드된 이후부터는 향후 v1.1.3, v1.1.4 등의 패치를 사용자가 직접 새로고침하지 않아도 자동으로 감지·적용할 수 있습니다.
+
+## v1.1.1 버그 수정 유지
 
 - 홈 버튼 / ← 홈 / 학습완료 후 홈 이동 오류 수정
 - 랭킹 점수 갱신 오류 수정
@@ -10,100 +27,51 @@
 - 퀴즈 중복 보기 방지
 - 선택한 CEFR 레벨과 다른 레벨의 학습자료가 시작되는 문제 수정
 - 오늘의 10분 학습 완료 상태 표시 보강
-- GitHub Pages 하위 경로에서 Push 알림 클릭 시 잘못된 주소로 이동하는 문제 수정
-- 로그아웃 시 Push 구독 정리로 계정 전환 충돌 예방
-- 서비스워커 캐시를 v1.1.1로 갱신하여 업데이트 반영 강화
+- GitHub Pages 하위 경로 Push 알림 클릭 경로 수정
+- 로그아웃 시 Push 구독 정리
 
-
-## v1.1 핵심 업데이트
+## 학습 구성
 
 - 총 학습 항목: **2,358개**
 - CEFR A1 / A2 / B1 / B2 / C1
-- 기본 영어 학습 + 반복 드릴 확대
-- Business English 실무 트랙 10개 추가
-  - 이메일
-  - 전화
-  - 회의
-  - 출장
-  - 견적·RFQ
-  - 납기·출하
-  - 품질·클레임
-  - 협상
-  - 계약
-  - 제품소개
+- 필수 단어, 회화, 문장 만들기, Listening, Speaking, 문법, 동사·시제, 전치사, 숙어
+- Business English 10개 트랙: 이메일, 전화, 회의, 출장, 견적·RFQ, 납기·출하, 품질·클레임, 협상, 계약, 제품소개
 - 미국식 / 영국식 TTS
-- Listening / Speaking / 문장 조립 / 복습 / 오답
-- 로그인 / Supabase 클라우드 동기화 / 관리자 / 랭킹
-- PWA 설치
-- 오후 7시 미학습 Push 알림용 Edge Function 포함
+- 복습 / 오답 / 출석 / 랭킹 / 관리자 / Supabase 동기화
+- PWA 설치 / 오후 7시 미학습 Push 알림
 
-## 1. GitHub 업데이트
+## GitHub 업데이트 방법
 
-기존 v1.0 저장소를 이미 만들었다면 이 폴더의 파일로 기존 저장소 파일을 덮어쓴 뒤 GitHub Desktop에서:
+기존 저장소의 파일을 v1.1.2 파일로 덮어쓴 뒤 GitHub Desktop에서:
 
 1. 변경 파일 확인
-2. Summary: `Fix ANTHONY ENGLISH COACH v1.1.1`
+2. Summary: `Smart Update v1.1.2`
 3. `Commit to main`
 4. `Push origin`
 
-새로 등록하는 경우:
+Supabase SQL은 다시 실행할 필요가 없습니다. 학습기록용 LocalStorage 키와 Supabase 테이블 구조도 변경하지 않았습니다.
 
-1. GitHub → New repository → 예: `anthony-english-coach`
-2. GitHub Desktop → File → Add local repository
-3. 이 폴더 선택 → 필요 시 Create repository
-4. Commit → Publish repository
-5. GitHub 저장소 → Settings → Pages → Deploy from a branch → `main` / `/(root)` → Save
+## Smart Update 동작 원칙
 
-## 2. Supabase DB
+업데이트를 발견해도 현재 학습 세션을 중단하지 않습니다. 새 Service Worker는 대기 상태로 유지되며, 사용자가 홈 화면으로 돌아온 뒤에만 활성화됩니다. 따라서 음성 재생, Speaking, 퀴즈 진행 위치가 패치 때문에 갑자기 끊기는 것을 방지합니다.
 
-처음 설치라면 `supabase_english_setup.sql` 전체를 SQL Editor에서 실행합니다. v1.0에서 이미 실행했다면 다시 실행해도 `if not exists` 중심이라 대부분 안전하게 유지됩니다.
+향후 새 버전을 만들 때는 `APP_VERSION`, Service Worker의 `SW_VERSION`/`CACHE_NAME`, HTML 정적 파일 버전 쿼리를 함께 올려야 합니다.
 
-## 3. cloud-config.js
-
-기존 일본어 앱에서 사용하는 Supabase Project URL과 publishable/anon key를 `cloud-config.js`에 입력하세요. **Service Role Key는 절대 GitHub 파일에 넣지 마세요.**
-
-## 4. 오후 7시 미학습 Push 알림
-
-앱 화면의 구독 기능만으로는 서버가 자동 발송할 수 없기 때문에 v1.1부터 다음을 포함합니다.
-
-- `supabase/functions/english-daily-reminder/index.ts`
-- `supabase/functions/english-daily-reminder/README_KR.md`
-- `supabase_cron_template.sql`
-
-### 반드시 별도로 보관할 파일
-ZIP과 별도로 전달되는 `ANTHONY_English_Coach_v1_1_PRIVATE_SETUP.txt`에 VAPID 비밀키와 Cron secret이 있습니다. **이 파일은 GitHub에 올리면 안 됩니다.**
-
-### 알림 설정 순서
-
-1. Supabase Edge Function으로 `english-daily-reminder` 배포 (`supabase functions deploy english-daily-reminder --no-verify-jwt` 또는 Dashboard에서 JWT 검증 해제)
-2. Supabase Function Secrets에 PRIVATE_SETUP 파일의 값을 저장
-3. `VAPID_SUBJECT`를 본인 이메일 형식으로 설정
-4. `supabase_cron_template.sql`의 `<PROJECT_REF>`와 `<CRON_SECRET>`를 입력
-5. SQL Editor에서 실행
-6. 앱에서 설정 → `오후 7시 미학습 알림` → 알림 켜기
-
-Cron은 `0 10 * * *`로 설정되어 있으며, 이는 **매일 10:00 UTC = 한국시간 19:00**입니다.
-
-## 5. v1.0/v1.1 → v1.1.1 업데이트 시 학습기록
-
-기존 LocalStorage 키와 Supabase 테이블을 유지하므로 v1.0 학습기록은 그대로 이어집니다. 새 콘텐츠와 Business English 트랙만 추가됩니다.
-
-## 6. 주요 파일
+## 주요 파일
 
 - `index.html` : 화면
 - `styles.css` : 반응형 UI
 - `content.js` : 2,358개 학습 콘텐츠
-- `app.js` : 학습·복습·듣기·말하기 로직
+- `app.js` : 학습 로직 + Smart Update
 - `cloud-auth.js` : 로그인·동기화·관리자·랭킹·Push 구독
 - `cloud-config.js` : Supabase 공개 연결정보
+- `service-worker.js` : PWA 캐시·Push 수신·안전한 업데이트 대기/활성화
 - `supabase_english_setup.sql` : 영어 전용 DB
 - `supabase/functions/english-daily-reminder/index.ts` : 오후 7시 알림 발송 함수
-- `supabase/config.toml` : 해당 알림 함수의 JWT 검증 해제 설정(함수 내부 Cron Secret으로 보호)
 - `supabase_cron_template.sql` : 매일 실행 스케줄 템플릿
-- `service-worker.js` : PWA 캐시·Push 수신
 
-## 7. 보안
+## 보안
 
 - GitHub에는 anon/publishable key만 사용
 - Service Role Key / VAPID Private Key / Cron Secret은 Supabase Secrets에만 저장
-- PRIVATE_SETUP 파일은 개인 보관하고 GitHub에 업로드하지 않음
+- PRIVATE_SETUP 파일은 GitHub에 업로드하지 않음

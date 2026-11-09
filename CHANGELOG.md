@@ -1,7 +1,17 @@
-# ANTHONY ENGLISH COACH v1.1.1
+# ANTHONY ENGLISH COACH v1.1.2
 
-## Bug fix / QA patch
-- 홈/←홈/학습완료 홈 이동 오류 수정 (`goHome` 전역 등록)
+## Smart Update
+- 앱 실행·재활성화·온라인 복귀 시 업데이트 자동 확인
+- 앱 장시간 실행 시 5분 간격 업데이트 확인
+- 새 Service Worker를 백그라운드 설치 후 waiting 상태로 보류
+- 학습/퀴즈/Listening/Speaking/모달/로그인 중 자동 재로드 방지
+- 홈 화면의 안전한 시점에만 새 버전 활성화 후 자동 1회 재로드
+- Service Worker 버전 질의 기능 추가로 향후 버전 불일치 자동 감지
+- 직전 캐시 1개를 유지하여 업데이트 전환 중 구버전 탭 안정성 보강
+- 기존 학습기록·Supabase DB 구조 그대로 유지
+
+## v1.1.1
+- 홈/←홈/학습완료 홈 이동 오류 수정
 - 홈 이동 시 열린 모달과 재생 중 음성 정리
 - 랭킹 점수 갱신 함수명 오류 수정
 - 전체 학습자료 한글 검색 오류 수정
@@ -10,19 +20,14 @@
 - 오늘의 10분 학습 완료 상태 표시 보강
 - 퀴즈 화면의 말하기 인식 결과 피드백 보강
 - 학습 진행률 표시 보정
-- GitHub Pages 하위 경로에서 Push 알림 클릭 시 잘못된 루트로 이동하는 문제 수정
-- 로그아웃 시 Push 구독 정리로 계정 전환 충돌 예방
-- 서비스워커 캐시 버전 갱신 및 업데이트 확인 강화
-
-# Changelog
+- GitHub Pages 하위 경로 Push 알림 클릭 경로 수정
+- 로그아웃 시 Push 구독 정리
 
 ## v1.1
 - 학습 콘텐츠 2,358개로 확장
 - Business English 10개 실무 트랙 신설
-- 카테고리 UI를 기본 영어 / Business English로 분리
 - 오후 7시 미학습 Push 발송용 Supabase Edge Function 추가
 - Cron 템플릿 추가
-- Service Worker 캐시 v1.1로 갱신
 - v1.0 학습기록 호환 유지
 
 ## v1.0

@@ -8,6 +8,9 @@ const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let activeUser='guest', state=defaultState(), selectedLevel='ALL', session=null, lastCategory='vocab', voices=[];
+const APP_VERSION='1.1.2';
+const SW_CHECK_MS=5*60*1000;
+let swReg=null,swUpdatePending=false,swApplying=false,swReloading=false,swCheckTimer=null,lastSwCheck=0,swNoticeShown=false;
 
 function defaultState(){return{version:1,totalSessions:0,learnedIds:[],correct:0,attempts:0,streak:0,lastStudy:'',attendance:{},dailyDone:{},cards:{},settings:{accent:'en-US',rate:.85,voice:'auto'},_updatedAt:Date.now()}}
 function normalizeState(s){let d=defaultState();s=s&&typeof s==='object'?s:{};let n={...d,...s};n.learnedIds=Array.isArray(n.learnedIds)?n.learnedIds:[];n.attendance=n.attendance||{};n.dailyDone=n.dailyDone||{};n.cards=n.cards||{};n.settings={...d.settings,...(n.settings||{})};return n}
@@ -22,10 +25,24 @@ function summary(s=state){s=normalizeState(s);let attendanceDays=Object.keys(s.a
 function getDefaultState(){return defaultState()}
 window.DACOApp={getState,applyExternalState,loadLocalForUser,hasMeaningfulState,summary,getDefaultState,setGuestMode};
 
-function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id)?.classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}
-function goHome(){session=null;document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));try{speechSynthesis?.cancel?.()}catch(_){ }showView('homeView');renderAll()}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));$(id)?.classList.add('on');window.scrollTo({top:0,behavior:'smooth'});setTimeout(maybeApplyUpdate,0)}
+function currentViewId(){return document.querySelector('.view.on')?.id||''}
+function authGateVisible(){let g=$('authGate');return !!(g&&!g.classList.contains('hidden'))}
+function isSafeForUpdate(){return !session&&currentViewId()==='homeView'&&!document.querySelector('.modal.on')&&!authGateVisible()}
+function workerVersion(worker){return new Promise(resolve=>{if(!worker)return resolve('');let done=false,t=setTimeout(()=>{if(!done){done=true;resolve('')}},700);try{let ch=new MessageChannel();ch.port1.onmessage=e=>{if(done)return;done=true;clearTimeout(t);resolve(String(e.data?.version||''))};worker.postMessage({type:'GET_VERSION'},[ch.port2])}catch(_){clearTimeout(t);resolve('')}})}
+async function activeWorkerIsNewer(){if(!swReg?.active)return false;let v=await workerVersion(swReg.active);return !!(v&&v!==APP_VERSION)}
+function announcePendingUpdate(){if(swNoticeShown)return;swNoticeShown=true;toast('새 버전을 받았습니다. 학습이 끝나면 자동 적용됩니다.')}
+async function maybeApplyUpdate(){if(swApplying||swReloading||!swReg)return;if(!isSafeForUpdate()){if(swUpdatePending)announcePendingUpdate();return}
+  if(swReg.waiting){swApplying=true;let w=swReg.waiting;let activated=false;let reload=()=>{if(activated||swReloading)return;activated=true;swReloading=true;setTimeout(()=>location.reload(),120)};w.addEventListener('statechange',()=>{if(w.state==='activated')reload()});try{w.postMessage({type:'SKIP_WAITING'})}catch(_){swApplying=false}return}
+  if(await activeWorkerIsNewer()){swReloading=true;setTimeout(()=>location.reload(),120)}
+}
+function watchInstallingWorker(worker){if(!worker)return;worker.addEventListener('statechange',()=>{if(worker.state==='installed'&&navigator.serviceWorker.controller){swUpdatePending=true;announcePendingUpdate();maybeApplyUpdate()}})}
+async function checkForAppUpdate(force=false){if(!swReg||document.visibilityState==='hidden')return;let now=Date.now();if(!force&&now-lastSwCheck<30000)return;lastSwCheck=now;try{await swReg.update()}catch(_){ }if(swReg.waiting){swUpdatePending=true;announcePendingUpdate()}maybeApplyUpdate()}
+async function initSmartUpdate(){if(!('serviceWorker'in navigator))return;try{swReg=await navigator.serviceWorker.register('./service-worker.js',{updateViaCache:'none'});if(swReg.installing)watchInstallingWorker(swReg.installing);swReg.addEventListener('updatefound',()=>watchInstallingWorker(swReg.installing));if(swReg.waiting&&navigator.serviceWorker.controller){swUpdatePending=true;announcePendingUpdate()}let gate=$('authGate');if(gate)new MutationObserver(()=>setTimeout(maybeApplyUpdate,0)).observe(gate,{attributes:true,attributeFilter:['class']});await checkForAppUpdate(true);clearInterval(swCheckTimer);swCheckTimer=setInterval(()=>checkForAppUpdate(false),SW_CHECK_MS);document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForAppUpdate(true)});window.addEventListener('focus',()=>checkForAppUpdate(true));window.addEventListener('online',()=>checkForAppUpdate(true))}catch(_){ }}
+function goHome(){session=null;document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));try{speechSynthesis?.cancel?.()}catch(_){ }showView('homeView');renderAll();setTimeout(maybeApplyUpdate,80)}
 window.goHome=goHome;
-function closeModal(id){$(id)?.classList.remove('on')}
+window.ANTHONY_UPDATE={version:APP_VERSION,check:()=>checkForAppUpdate(true),apply:maybeApplyUpdate,isSafe:isSafeForUpdate};
+function closeModal(id){$(id)?.classList.remove('on');setTimeout(maybeApplyUpdate,0)}
 window.closeModal=closeModal;
 function toast(t){let e=$('toast');if(!e)return;e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800)}
 window.toast=toast;
@@ -119,6 +136,6 @@ function resetProgress(){if(!confirm('영어 학습기록을 모두 초기화할
 window.resetProgress=resetProgress;
 function jsq(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ')}
 
-function init(){state=loadLocalForUser(window.DACO_CLOUD_USER_ID||'guest');renderAll();$('importFile')?.addEventListener('change',e=>{let f=e.target.files?.[0];if(f)importProgressFile(f);e.target.value=''});if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js').then(r=>r.update().catch(()=>{})).catch(()=>{});document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'))})}
+function init(){state=loadLocalForUser(window.DACO_CLOUD_USER_ID||'guest');renderAll();$('importFile')?.addEventListener('change',e=>{let f=e.target.files?.[0];if(f)importProgressFile(f);e.target.value=''});initSmartUpdate();document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));setTimeout(maybeApplyUpdate,0)}})}
 window.addEventListener('DOMContentLoaded',init);
 })();
