@@ -1,3 +1,14 @@
+# YOMIAN ENGLISH v1.2.4
+
+- PWA identity aligned 1:1 with the repository path
+- `id = /anthony-english-coach/`
+- `start_url = /anthony-english-coach/` (removed `?app=yomian-en`)
+- `scope = /anthony-english-coach/`
+- Recovery App ID remains separate, while recovery launch now opens the same English app root
+- `launch_handler.client_mode = navigate-new` retained
+- Smart Update bumped to v1.2.4
+- Login / Supabase / learning progress unchanged
+
 # YOMIAN ENGLISH v1.2.3
 
 - PC Chrome PWA cross-launch isolation patch

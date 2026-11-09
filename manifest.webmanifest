@@ -3,7 +3,7 @@
   "name": "YOMIAN ENGLISH",
   "short_name": "YOMIAN EN",
   "description": "YOMIAN English learning app · CEFR A1-C1 · Business English · Listening · Speaking · Review",
-  "start_url": "/anthony-english-coach/?app=yomian-en",
+  "start_url": "/anthony-english-coach/",
   "scope": "/anthony-english-coach/",
   "display": "standalone",
   "background_color": "#f6f8fc",

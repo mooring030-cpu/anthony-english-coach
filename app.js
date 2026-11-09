@@ -8,7 +8,7 @@ const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let activeUser='guest', state=defaultState(), selectedLevel='ALL', session=null, lastCategory='vocab', voices=[];
-const APP_VERSION='1.2.3';
+const APP_VERSION='1.2.4';
 
 const YOMIAN_EN_BASE='/anthony-english-coach/';
 function initLaunchIsolation(){

@@ -1,3 +1,21 @@
+# YOMIAN ENGLISH v1.2.4 PWA ID 완전 정렬
+
+이번 버전은 YOMIAN JAPANESE v6.11.5와 동일한 규칙으로 영어 앱의 PWA 정체성을 완전히 정렬합니다.
+
+- App ID: `/anthony-english-coach/`
+- Start URL: `/anthony-english-coach/`
+- Scope: `/anthony-english-coach/`
+- 앱 실행: `launch_handler.client_mode = navigate-new`
+- 재설치 복구용 App ID는 `/anthony-english-coach/reinstall-v1`로 별도 유지
+- 복구 설치 후 시작 URL도 동일한 영어 앱 홈 `/anthony-english-coach/` 사용
+- 기존 로그인 / Supabase / 학습진도 / Smart Update 유지
+
+GitHub에는 기존 파일을 덮어쓰고 `Commit to main` → `Push origin` 하면 됩니다. Supabase 변경은 없습니다.
+
+> 이미 PC에 잘못된 공통 PWA ID 상태로 설치된 앱은 서버 패치만으로 자동 분리되지 않을 수 있습니다. 일본어와 영어 양쪽 서버 패치를 올린 뒤 잘못 설치된 기존 YOMIAN 앱을 한 번 제거하고 각각 다시 설치하는 것이 가장 확실합니다.
+
+---
+
 # YOMIAN ENGLISH v1.2.3 PC PWA 충돌 방지
 
 이번 버전은 같은 `*.github.io` 원본 아래의 YOMIAN JAPANESE / YOMIAN ENGLISH가 Windows Chrome에서 잘못 같은 앱 창으로 연결되는 현상을 줄이기 위한 패치입니다.

@@ -3,7 +3,7 @@
   "name": "YOMIAN ENGLISH",
   "short_name": "YOMIAN EN",
   "description": "YOMIAN ENGLISH reinstall recovery entry for Chrome/Android PWA installation issues.",
-  "start_url": "/anthony-english-coach/?app=yomian-en-reinstall-v2",
+  "start_url": "/anthony-english-coach/",
   "scope": "/anthony-english-coach/",
   "display": "standalone",
   "background_color": "#f6f8fc",
