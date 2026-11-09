@@ -1,6 +1,6 @@
-const SW_VERSION='1.2.4';
-const CACHE_NAME='anthony-english-coach-v1-2-4';
-const ASSETS=['./','./index.html','./styles.css?v=1.2.4','./content.js?v=1.2.4','./app.js?v=1.2.4','./cloud-auth.js?v=1.2.4','./cloud-config.js?v=1.2.4','./manifest.webmanifest','./reinstall.html','./manifest-reinstall.webmanifest','./yomian-english-icon-192-v3.png','./yomian-english-icon-512-v3.png'];
+const SW_VERSION='1.3.0';
+const CACHE_NAME='anthony-english-coach-v1-3-0';
+const ASSETS=['./','./index.html','./styles.css?v=1.3.0','./content.js?v=1.3.0','./app.js?v=1.3.0','./cloud-auth.js?v=1.3.0','./cloud-config.js?v=1.3.0','./manifest.webmanifest','./reinstall.html','./manifest-reinstall.webmanifest','./yomian-english-icon-192-v3.png','./yomian-english-icon-512-v3.png'];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));
