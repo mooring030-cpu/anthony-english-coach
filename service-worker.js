@@ -1,6 +1,6 @@
-const SW_VERSION='1.1.2';
-const CACHE_NAME='anthony-english-coach-v1-1-2';
-const ASSETS=['./','./index.html','./styles.css?v=1.1.2','./content.js?v=1.1.2','./app.js?v=1.1.2','./cloud-auth.js?v=1.1.2','./cloud-config.js?v=1.1.2','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+const SW_VERSION='1.2.1';
+const CACHE_NAME='anthony-english-coach-v1-2-1';
+const ASSETS=['./','./index.html','./styles.css?v=1.2.1','./content.js?v=1.2.1','./app.js?v=1.2.1','./cloud-auth.js?v=1.2.1','./cloud-config.js?v=1.2.1','./manifest.webmanifest','./yomian-english-icon-192-v3.png','./yomian-english-icon-512-v3.png'];
 
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));
@@ -39,9 +39,9 @@ self.addEventListener('fetch',e=>{
 });
 
 self.addEventListener('push',e=>{
-  let d={title:'ANTHONY ENGLISH COACH',body:'오늘 영어 10분이 아직 남아 있어요. 3분만 시작해도 좋습니다.',url:'./'};
+  let d={title:'YOMIAN ENGLISH',body:'오늘 영어 10분이 아직 남아 있어요. 3분만 시작해도 좋습니다.',url:'./'};
   try{if(e.data)d={...d,...e.data.json()}}catch(_){try{d.body=e.data.text()}catch(__){}}
-  e.waitUntil(self.registration.showNotification(d.title,{body:d.body,icon:'./icon-192.png',badge:'./icon-192.png',tag:'anthony-en-study',data:{url:d.url||'./'}}));
+  e.waitUntil(self.registration.showNotification(d.title,{body:d.body,icon:'./yomian-english-icon-192-v3.png',badge:'./yomian-english-icon-192-v3.png',tag:'anthony-en-study',data:{url:d.url||'./'}}));
 });
 
 self.addEventListener('notificationclick',e=>{

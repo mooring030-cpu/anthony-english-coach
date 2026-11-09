@@ -1,34 +1,15 @@
-# ANTHONY ENGLISH COACH v1.1.2
+# YOMIAN ENGLISH v1.2.1
 
-## Smart Update
-- 앱 실행·재활성화·온라인 복귀 시 업데이트 자동 확인
-- 앱 장시간 실행 시 5분 간격 업데이트 확인
-- 새 Service Worker를 백그라운드 설치 후 waiting 상태로 보류
-- 학습/퀴즈/Listening/Speaking/모달/로그인 중 자동 재로드 방지
-- 홈 화면의 안전한 시점에만 새 버전 활성화 후 자동 1회 재로드
-- Service Worker 버전 질의 기능 추가로 향후 버전 불일치 자동 감지
-- 직전 캐시 1개를 유지하여 업데이트 전환 중 구버전 탭 안정성 보강
-- 기존 학습기록·Supabase DB 구조 그대로 유지
+## Final rebrand + English icon update
+- App brand: **ANTHONY ENGLISH COACH → YOMIAN ENGLISH**
+- Short installed name: **YOMIAN EN**
+- New English-specific icon with a distinct London composition
+- Added both **UK and US flags** to make the English app visually distinct from YOMIAN JAPANESE
+- PWA icon URLs changed to `yomian-english-icon-*-v3.png` so supported browsers can detect the icon update
+- Browser title, Apple web-app title, login screen, header, home version label, manifest, push notification title updated to YOMIAN
+- Smart Update retained: updates download in the background and apply only at a safe point (home/no active lesson/no open modal)
+- Fixed internal Smart Update version to `1.2.1`
+- Existing learning data, login state and Supabase tables remain compatible
 
-## v1.1.1
-- 홈/←홈/학습완료 홈 이동 오류 수정
-- 홈 이동 시 열린 모달과 재생 중 음성 정리
-- 랭킹 점수 갱신 함수명 오류 수정
-- 전체 학습자료 한글 검색 오류 수정
-- 퀴즈 중복 보기 방지
-- CEFR 레벨 선택 시 다른 레벨 자료가 섞이는 문제 수정
-- 오늘의 10분 학습 완료 상태 표시 보강
-- 퀴즈 화면의 말하기 인식 결과 피드백 보강
-- 학습 진행률 표시 보정
-- GitHub Pages 하위 경로 Push 알림 클릭 경로 수정
-- 로그아웃 시 Push 구독 정리
-
-## v1.1
-- 학습 콘텐츠 2,358개로 확장
-- Business English 10개 실무 트랙 신설
-- 오후 7시 미학습 Push 발송용 Supabase Edge Function 추가
-- Cron 템플릿 추가
-- v1.0 학습기록 호환 유지
-
-## v1.0
-- 최초 영어판
+## Compatibility note
+Internal storage keys and some internal code identifiers intentionally retain `anthony_en_*` / `ANTHONY_*` names so existing users do not lose progress or sessions during the brand change.

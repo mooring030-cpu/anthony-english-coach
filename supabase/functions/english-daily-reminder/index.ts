@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   for (const sub of subs ?? []) {
     const state:any=stateByUser.get(sub.user_id) ?? {};
     if (state.lastStudy === today) { skipped++; continue; }
-    const payload=JSON.stringify({ title:"ANTHONY ENGLISH COACH", body:"오늘 영어 10분이 아직 남아 있어요. 짧게라도 시작해 보세요.", url:"./" });
+    const payload=JSON.stringify({ title:"YOMIAN ENGLISH", body:"오늘 영어 10분이 아직 남아 있어요. 짧게라도 시작해 보세요.", url:"./" });
     try {
       await webpush.sendNotification({ endpoint:sub.endpoint, keys:{ p256dh:sub.p256dh, auth:sub.auth } }, payload);
       sent++;
