@@ -1,10 +1,10 @@
 {
-  "id": "./",
+  "id": "/anthony-english-coach/",
   "name": "YOMIAN ENGLISH",
   "short_name": "YOMIAN EN",
   "description": "YOMIAN English learning app · CEFR A1-C1 · Business English · Listening · Speaking · Review",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/anthony-english-coach/?app=yomian-en",
+  "scope": "/anthony-english-coach/",
   "display": "standalone",
   "background_color": "#f6f8fc",
   "theme_color": "#183b95",
@@ -22,5 +22,8 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-new"
+  }
 }

@@ -1,3 +1,13 @@
+# YOMIAN ENGLISH v1.2.3
+
+- PC Chrome PWA cross-launch isolation patch
+- Main manifest id fixed to `/anthony-english-coach/`
+- start_url/scope fixed to the English repository path
+- `launch_handler.client_mode = navigate-new` added
+- launchQueue guard follows the original target URL if Chrome reuses the wrong YOMIAN app window
+- Reinstall PWA keeps its separate recovery identity as an explicit absolute app id
+- Smart Update / login / Supabase / learning progress unchanged
+
 # YOMIAN ENGLISH v1.2.2
 
 ## PWA install recovery patch

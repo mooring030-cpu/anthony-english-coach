@@ -1,3 +1,14 @@
+# YOMIAN ENGLISH v1.2.3 PC PWA 충돌 방지
+
+이번 버전은 같은 `*.github.io` 원본 아래의 YOMIAN JAPANESE / YOMIAN ENGLISH가 Windows Chrome에서 잘못 같은 앱 창으로 연결되는 현상을 줄이기 위한 패치입니다.
+
+- 영어 앱 App ID: `/anthony-english-coach/`
+- 영어 앱 scope: `/anthony-english-coach/`
+- 앱 실행: `navigate-new`
+- 잘못된 PWA 창 재사용 시 원래 launch target으로 이동하는 방어 로직 포함
+
+GitHub에는 기존 파일을 덮어쓰고 Commit -> Push 하면 됩니다. Supabase 변경은 없습니다.
+
 # YOMIAN ENGLISH v1.2.2
 
 ## Chrome/Android “이미 설치됨” 복구 기능

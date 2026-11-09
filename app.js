@@ -8,7 +8,32 @@ const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'});
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let activeUser='guest', state=defaultState(), selectedLevel='ALL', session=null, lastCategory='vocab', voices=[];
-const APP_VERSION='1.2.2';
+const APP_VERSION='1.2.3';
+
+const YOMIAN_EN_BASE='/anthony-english-coach/';
+function initLaunchIsolation(){
+  try{
+    if('launchQueue' in window && typeof window.launchQueue.setConsumer==='function'){
+      window.launchQueue.setConsumer(params=>{
+        try{
+          const raw=params?.targetURL||'';
+          if(!raw)return;
+          const target=new URL(raw,location.origin);
+          if(target.origin!==location.origin){location.href=target.href;return}
+          if(!target.pathname.startsWith(YOMIAN_EN_BASE)){
+            // Chrome가 다른 YOMIAN PWA 창을 잘못 재사용한 경우 원래 실행 대상 URL을 존중한다.
+            location.href=target.href;
+            return;
+          }
+          if(location.pathname!==target.pathname||location.search!==target.search||location.hash!==target.hash){
+            location.replace(target.href);
+          }
+        }catch(_){ }
+      });
+    }
+  }catch(_){ }
+}
+
 const SW_CHECK_MS=5*60*1000;
 let swReg=null,swUpdatePending=false,swApplying=false,swReloading=false,swCheckTimer=null,lastSwCheck=0,swNoticeShown=false;
 
@@ -136,6 +161,6 @@ function resetProgress(){if(!confirm('영어 학습기록을 모두 초기화할
 window.resetProgress=resetProgress;
 function jsq(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ')}
 
-function init(){state=loadLocalForUser(window.DACO_CLOUD_USER_ID||'guest');renderAll();$('importFile')?.addEventListener('change',e=>{let f=e.target.files?.[0];if(f)importProgressFile(f);e.target.value=''});initSmartUpdate();document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));setTimeout(maybeApplyUpdate,0)}})}
+function init(){initLaunchIsolation();state=loadLocalForUser(window.DACO_CLOUD_USER_ID||'guest');renderAll();$('importFile')?.addEventListener('change',e=>{let f=e.target.files?.[0];if(f)importProgressFile(f);e.target.value=''});initSmartUpdate();document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));setTimeout(maybeApplyUpdate,0)}})}
 window.addEventListener('DOMContentLoaded',init);
 })();
